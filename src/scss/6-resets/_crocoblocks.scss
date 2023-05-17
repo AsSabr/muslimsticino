@@ -1,0 +1,14 @@
+.jet-listing-grid {
+  .jet-engine-listing-overlay-wrap {
+    &:hover {
+      h3 a {
+        color: #22babb;
+      }
+      h5{
+        &.jet-listing-dynamic-field__content{
+          color: #22babb;
+        }
+      }
+    }
+  }
+}

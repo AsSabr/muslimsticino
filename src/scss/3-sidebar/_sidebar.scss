@@ -1,0 +1,11 @@
+.lmt_sidebar_divider {
+  &:before {
+    content: '';
+    width: 50px;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #0099dd;
+  }
+}
