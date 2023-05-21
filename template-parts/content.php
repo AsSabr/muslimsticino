@@ -14,6 +14,45 @@
 		<?php
 		if ( is_singular() ) :
 			the_title( '<h1 class="entry-title">', '</h1>' );
+
+		$hijri = file_get_contents("http://api.aladhan.com/v1/gToH/" . date('d-m-Y'));
+
+		$data = json_decode($hijri, true);
+
+		$day = $data['data']['hijri']['day'];
+		$month = $data['data']['hijri']['month']['en'];
+		$year = $data['data']['hijri']['year'];
+		$print = $day .' '. $month .', '. $year;
+
+		echo '<h2>' . $print . '</h2>';
+
+		//https://aladhan.com/prayer-times-api#GetTimingsByCity
+		$solyat = file_get_contents('https://api.aladhan.com/v1/timingsByCity/21-05-2023?city=Lugano&country=Switzerland&method=2');
+		$solyat_data = json_decode($solyat, true);
+
+		$time = $solyat_data['data']['timings'];
+		$delete_sunrise = $solyat_data['data']['timings']['Sunrise'];
+		$delete_maghrib = $solyat_data['data']['timings']['Maghrib'];
+
+
+		if ( ($key = array_search($delete_sunrise, $time) ) !== false ) {
+			unset($time[$key]);
+		}
+		if (($key = array_search($delete_maghrib, $time) ) !== false){
+			unset($time[$key]);
+		}
+
+		$remove = array_splice($time, 5);
+
+		foreach ($time as $t => $v){
+			echo '<div style="display: flex; width: 150px"><div style="width:100%; display: flex; justify-content: space-between; padding-bottom: 2px; border-bottom: 1px solid grey"><div>' .$t.'</div><div>' . $v . '</div></div></div>';
+//			print_r($t .' '. $v);
+		}
+
+		echo '<pre/>';
+		print_r($time);
+		wp_die();
+
 		else :
 			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 		endif;
